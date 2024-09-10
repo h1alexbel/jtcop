@@ -90,6 +90,31 @@ final class RulePresentSimpleMlTest {
         );
     }
 
+    /**
+     * @todo #248:25min Enable passesOnPlural test when plural speech detection will
+     *  be implemented in {@link RulePresentSimpleMl}. Let's test the following
+     *  pattern: <PLURAL NOUN><PLURAL VERB>... .
+     */
+    @Disabled
+    @CsvSource(
+        {
+            "theyBuildModel",
+            "theyPassTest",
+            "documentsDoGood"
+        }
+    )
+    @ParameterizedTest
+    void passesOnPlural(final String name) {
+        MatcherAssert.assertThat(
+            String.format("Name '%s' has to be correct", name),
+            new RulePresentSimpleMl(
+                RulePresentSimpleMlTest.model,
+                new TestCase.Fake(name)
+            ).complaints(),
+            Matchers.empty()
+        );
+    }
+
     @CsvSource({
         "building",
         "chicken",
