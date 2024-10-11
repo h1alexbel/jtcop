@@ -59,6 +59,7 @@ public final class PresentTenseForPlural implements Scalar<Boolean> {
 
     @Override
     public Boolean value() throws Exception {
+        System.out.println(this.tags);
         final List<Tag> collected = this.tags.stream()
             .filter(
                 tag ->
@@ -69,6 +70,16 @@ public final class PresentTenseForPlural implements Scalar<Boolean> {
         final List<Tag> verbs = collected.stream().filter(
             tag -> tag.isVerb() || "NNS".equals(tag.name())
         ).collect(Collectors.toList());
-        return "PRP".equals(collected.get(0).name()) && !verbs.isEmpty();
+        final boolean result;
+        if (collected.size() > 2) {
+            result = this.pluralStartsWithSubject(collected, verbs);
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    private boolean pluralStartsWithSubject(final List<Tag> collected, final List<Tag> verbs) {
+        return ("PRP".equals(collected.get(0).name()) && "PRP".equals(collected.get(1).name()) || "PRP".equals(collected.get(0).name()) && "NNS".equals(collected.get(1).name()) || "NNS".equals(collected.get(1).name())) && !verbs.isEmpty();
     }
 }
