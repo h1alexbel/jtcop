@@ -27,7 +27,6 @@ import java.util.List;
 import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.IsEqual;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -38,7 +37,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 final class PresentTenseForPluralTest {
 
-    @MethodSource("presentTenseWithPlural")
+    @MethodSource("presentTenseWithPluralPatterns")
     @ParameterizedTest
     void passesOnPresentTenseForPlural(final List<Tag> tags) throws Exception {
         MatcherAssert.assertThat(
@@ -51,7 +50,7 @@ final class PresentTenseForPluralTest {
         );
     }
 
-    @MethodSource("shouldBeRejected")
+    @MethodSource("rejectedPatterns")
     @ParameterizedTest
     void rejectsOnNonPresentTenseForPlural(final List<Tag> tags) throws Exception {
         MatcherAssert.assertThat(
@@ -64,7 +63,7 @@ final class PresentTenseForPluralTest {
         );
     }
 
-    private static List<List<Tag>> presentTenseWithPlural() {
+    private static List<List<Tag>> presentTenseWithPluralPatterns() {
         return new ListOf<>(
             new ListOf<>(Tag.PRP, Tag.PRP, Tag.VBP),
             new ListOf<>(Tag.PRP, Tag.PRP, Tag.VB),
@@ -73,7 +72,7 @@ final class PresentTenseForPluralTest {
         );
     }
 
-    private static List<List<Tag>> shouldBeRejected() {
+    private static List<List<Tag>> rejectedPatterns() {
         return new ListOf<>(
             new ListOf<>(Tag.NNS, Tag.PRP, Tag.VBP),
             new ListOf<>(Tag.NNS, Tag.PRP, Tag.VB),
@@ -84,7 +83,9 @@ final class PresentTenseForPluralTest {
             new ListOf<>(Tag.PRP, Tag.NNS, Tag.VHP),
             new ListOf<>(Tag.PRP, Tag.NN, Tag.VBP),
             new ListOf<>(Tag.PRP, Tag.PRP, Tag.UNKNOWN),
-            new ListOf<>(Tag.PRP, Tag.PRP, Tag.JJ)
+            new ListOf<>(Tag.PRP, Tag.PRP, Tag.JJ),
+            new ListOf<>(Tag.VB, Tag.PRP, Tag.PRP),
+            new ListOf<>(Tag.VBP, Tag.NN, Tag.PRP)
         );
     }
 }
