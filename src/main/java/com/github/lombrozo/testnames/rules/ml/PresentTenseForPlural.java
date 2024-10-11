@@ -59,7 +59,6 @@ public final class PresentTenseForPlural implements Scalar<Boolean> {
 
     @Override
     public Boolean value() throws Exception {
-        System.out.println(this.tags);
         final List<Tag> collected = this.tags.stream()
             .filter(
                 tag ->
