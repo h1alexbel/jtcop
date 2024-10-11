@@ -24,11 +24,15 @@
 package com.github.lombrozo.testnames.rules.ml;
 
 import com.github.lombrozo.testnames.TestCase;
+import java.util.Arrays;
 import opennlp.tools.postag.POSTaggerME;
+import opennlp.tools.tokenize.WhitespaceTokenizer;
+import opennlp.tools.util.Span;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -90,14 +94,6 @@ final class RulePresentSimpleMlTest {
         );
     }
 
-    /**
-     * Test case for present tense on plural with subject at the beginning.
-     * @param name Test method name
-     * @todo #248:25min Enable passesOnPlural test when plural speech detection will
-     *  be implemented in {@link RulePresentSimpleMl}. Let's test that the following
-     *  pattern: $pluralNoun_$pluralVerb... passes.
-     */
-    @Disabled
     @CsvSource(
         {
             "theyBuildModel",
@@ -145,6 +141,50 @@ final class RulePresentSimpleMlTest {
             ).complaints(),
             Matchers.empty()
         );
+    }
+
+    @CsvSource(
+        {
+            "They Build Model",
+            "They Pass Test",
+            "Robots Do Good",
+            "Documents Serve People",
+            "Humans Craft Solutions",
+            "Machines Learn Patterns",
+            "Users Trust System",
+            "Algorithms Predict Outcome",
+            "Clients Receive Notifications",
+            "Servers Handle Request",
+            "Employees Submit Report",
+            "Devices Sync Data",
+            "Bots Respond Instantly",
+            "Students Complete Assignments",
+            "Applications Run Smoothly",
+            "Tasks Generate Results",
+            "Administrators Manage Access",
+            "Data Drives Decisions",
+            "Systems Process Input",
+            "Dogs Bark",
+            "Cats Purr",
+            "Birds Sing",
+            "Fish Swim",
+            "Trees Grow",
+            "Rivers Flow",
+            "Cars Race",
+            "Children Play",
+            "Students Study",
+            "Chickens Build",
+            "Programmers Take Risks"
+        }
+    )
+    @ParameterizedTest
+    void tokenizesWithVerb(final String sentence) {
+        final String[] tokens = WhitespaceTokenizer.INSTANCE.tokenize(sentence);
+        final String[] tags = RulePresentSimpleMlTest.model.tag(tokens);
+        final String transformation = String.format(
+            "%s -> %s", sentence, Arrays.toString(tags)
+        );
+        System.out.println(transformation);
     }
 
     @CsvSource({
