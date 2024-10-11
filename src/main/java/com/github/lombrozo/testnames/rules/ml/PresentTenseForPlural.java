@@ -80,6 +80,6 @@ public final class PresentTenseForPlural implements Scalar<Boolean> {
     }
 
     private boolean pluralStartsWithSubject(final List<Tag> collected, final List<Tag> verbs) {
-        return ("PRP".equals(collected.get(0).name()) && "PRP".equals(collected.get(1).name()) || "PRP".equals(collected.get(0).name()) && "NNS".equals(collected.get(1).name()) || "NNS".equals(collected.get(1).name())) && !verbs.isEmpty();
+        return ("PRP".equals(collected.get(0).name()) && "PRP".equals(collected.get(1).name()) || "PRP".equals(collected.get(0).name()) && "NNS".equals(collected.get(1).name())) && ("VBP".equals(collected.get(2).name()) || "VB".equals(collected.get(2).name()));
     }
 }
