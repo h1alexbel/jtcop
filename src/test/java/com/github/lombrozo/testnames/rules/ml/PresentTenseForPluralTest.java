@@ -51,12 +51,40 @@ final class PresentTenseForPluralTest {
         );
     }
 
+    @MethodSource("shouldBeRejected")
+    @ParameterizedTest
+    void rejectsOnNonPresentTenseForPlural(final List<Tag> tags) throws Exception {
+        MatcherAssert.assertThat(
+            String.format(
+                "Tags: %s should not form present tense for plural",
+                tags
+            ),
+            new PresentTenseForPlural(tags).value(),
+            new IsEqual<>(false)
+        );
+    }
+
     private static List<List<Tag>> presentTenseWithPlural() {
         return new ListOf<>(
             new ListOf<>(Tag.PRP, Tag.PRP, Tag.VBP),
             new ListOf<>(Tag.PRP, Tag.PRP, Tag.VB),
             new ListOf<>(Tag.PRP, Tag.NNS, Tag.VBP),
             new ListOf<>(Tag.PRP, Tag.NNS, Tag.VB)
+        );
+    }
+
+    private static List<List<Tag>> shouldBeRejected() {
+        return new ListOf<>(
+            new ListOf<>(Tag.NNS, Tag.PRP, Tag.VBP),
+            new ListOf<>(Tag.NNS, Tag.PRP, Tag.VB),
+            new ListOf<>(Tag.NNS, Tag.NNS, Tag.VBP),
+            new ListOf<>(Tag.NNS, Tag.NNS, Tag.VB),
+            new ListOf<>(Tag.PRP, Tag.PRP, Tag.VBZ),
+            new ListOf<>(Tag.PRP, Tag.PRP, Tag.VV),
+            new ListOf<>(Tag.PRP, Tag.NNS, Tag.VHP),
+            new ListOf<>(Tag.PRP, Tag.NN, Tag.VBP),
+            new ListOf<>(Tag.PRP, Tag.PRP, Tag.UNKNOWN),
+            new ListOf<>(Tag.PRP, Tag.PRP, Tag.JJ)
         );
     }
 }
