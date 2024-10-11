@@ -28,6 +28,8 @@ import org.cactoos.list.ListOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Tests for {@link PresentTenseForPlural}.
@@ -36,9 +38,9 @@ import org.junit.jupiter.api.Test;
  */
 final class PresentTenseForPluralTest {
 
-    @Test
-    void passesOnPresentTenseWithPresentVerb() throws Exception {
-        final List<Tag> tags = new ListOf<>(Tag.PRP, Tag.PRP, Tag.VBP);
+    @MethodSource("presentTenseWithPlural")
+    @ParameterizedTest
+    void passesOnPresentTenseForPlural(final List<Tag> tags) throws Exception {
         MatcherAssert.assertThat(
             String.format(
                 "Tags: %s should form present tense for plural",
@@ -49,16 +51,12 @@ final class PresentTenseForPluralTest {
         );
     }
 
-    @Test
-    void passesOnPresentTenseWithBaseVerb() throws Exception {
-        final List<Tag> tags = new ListOf<>(Tag.PRP, Tag.PRP, Tag.VB);
-        MatcherAssert.assertThat(
-            String.format(
-                "Tags '%s' should form present tense for plural",
-                tags
-            ),
-            new PresentTenseForPlural(tags).value(),
-            new IsEqual<>(true)
+    private static List<List<Tag>> presentTenseWithPlural() {
+        return new ListOf<>(
+            new ListOf<>(Tag.PRP, Tag.PRP, Tag.VBP),
+            new ListOf<>(Tag.PRP, Tag.PRP, Tag.VB),
+            new ListOf<>(Tag.PRP, Tag.NNS, Tag.VBP),
+            new ListOf<>(Tag.PRP, Tag.NNS, Tag.VB)
         );
     }
 }
