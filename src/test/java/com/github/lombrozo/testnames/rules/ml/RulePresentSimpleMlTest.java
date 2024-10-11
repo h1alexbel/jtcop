@@ -127,7 +127,9 @@ final class RulePresentSimpleMlTest {
             "riversFlow",
             "carsRace",
             "childrenPlay",
-            "studentsStudy"
+            "studentsStudy",
+            "chickensBuild",
+            "programmersTakeRisks"
         }
     )
     @ParameterizedTest
